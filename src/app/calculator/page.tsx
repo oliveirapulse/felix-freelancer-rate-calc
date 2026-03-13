@@ -1,5 +1,6 @@
 import RateCalculator from '@/components/Calculator/RateCalculator'
 import AccessControl from '@/components/AccessControl'
+import Image from 'next/image'
 
 export default function CalculatorPage() {
   return (
@@ -10,7 +11,13 @@ export default function CalculatorPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center">
-              <h1 className="text-xl font-bold text-gray-900">Freelancer Rate Calculator</h1>
+              <Image
+                src="/logo.jpg"
+                alt="Freelancer Rate Calculator"
+                width={200}
+                height={50}
+                className="h-10 w-auto"
+              />
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-500">Pro Version</span>

@@ -1,4 +1,5 @@
 import CheckoutButton from '@/components/CheckoutButton'
+import Image from 'next/image'
 
 export default function Home() {
   return (
@@ -8,7 +9,13 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center">
-              <h1 className="text-xl font-bold text-gray-900">Freelancer Rate Calculator</h1>
+              <Image
+                src="/logo.jpg"
+                alt="Freelancer Rate Calculator"
+                width={200}
+                height={50}
+                className="h-10 w-auto"
+              />
             </div>
             <div className="hidden md:flex items-center space-x-6">
               <a href="#features" className="text-gray-600 hover:text-gray-900 transition-colors">Features</a>
