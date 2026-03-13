@@ -1,3 +1,5 @@
+import CheckoutButton from '@/components/CheckoutButton'
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-white">
@@ -29,12 +31,15 @@ export default function Home() {
             Includes professional proposal templates to justify your new rates.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button className="bg-white text-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition-colors shadow-lg">
+            <CheckoutButton className="bg-white text-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition-colors shadow-lg">
               Calculate My Rates - $29
-            </button>
-            <button className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
+            </CheckoutButton>
+            <a 
+              href="/calculator"
+              className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors inline-block"
+            >
               Try Free Preview
-            </button>
+            </a>
           </div>
           
           {/* Social Proof */}
@@ -291,9 +296,9 @@ export default function Home() {
               </li>
             </ul>
 
-            <button className="w-full bg-white text-blue-600 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition-colors shadow-lg mb-4">
+            <CheckoutButton className="w-full bg-white text-blue-600 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition-colors shadow-lg mb-4">
               Get Instant Access - $29
-            </button>
+            </CheckoutButton>
 
             <div className="text-blue-200 text-sm">
               💳 Secure payment via Stripe • 🔒 30-day guarantee
@@ -347,9 +352,9 @@ export default function Home() {
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
             Join 1,200+ freelancers who've increased their rates and improved their proposals with our tool.
           </p>
-          <button className="bg-white text-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition-colors shadow-lg mb-6">
+          <CheckoutButton className="bg-white text-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-50 transition-colors shadow-lg mb-6">
             Calculate My Optimal Rates - $29
-          </button>
+          </CheckoutButton>
           <div className="text-blue-200 text-sm">
             30-day money-back guarantee • Secure payment • Instant access
           </div>

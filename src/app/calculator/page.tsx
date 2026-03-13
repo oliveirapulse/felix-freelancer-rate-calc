@@ -1,8 +1,10 @@
 import RateCalculator from '@/components/Calculator/RateCalculator'
+import AccessControl from '@/components/AccessControl'
 
 export default function CalculatorPage() {
   return (
-    <div className="min-h-screen bg-gray-100">
+    <AccessControl>
+      <div className="min-h-screen bg-gray-100">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -120,5 +122,6 @@ export default function CalculatorPage() {
         </div>
       </main>
     </div>
+    </AccessControl>
   )
 }
