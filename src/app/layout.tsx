@@ -15,6 +15,21 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Freelancer Rate Calculator - Stop Undercharging",
   description: "Calculate your optimal freelance rates with our smart pricing tool. Includes 5 professional proposal templates. $29 one-time payment.",
+  keywords: "freelancer rates, pricing calculator, freelance pricing, proposal templates, rate calculator, freelance business",
+  authors: [{ name: "Freelancer Rate Calculator" }],
+  robots: "index, follow",
+  openGraph: {
+    title: "Freelancer Rate Calculator - Stop Undercharging",
+    description: "Calculate your optimal freelance rates with our smart pricing tool. Stop leaving money on the table.",
+    url: "https://freelancerratecalc.com",
+    siteName: "Freelancer Rate Calculator",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Freelancer Rate Calculator - Stop Undercharging", 
+    description: "Calculate your optimal freelance rates with our smart pricing tool. Stop leaving money on the table.",
+  }
 };
 
 export default function RootLayout({
