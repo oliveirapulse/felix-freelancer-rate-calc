@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import ProposalForm from '@/components/Proposals/ProposalForm'
 
 interface ProposalTemplate {
   id: string
@@ -245,49 +246,13 @@ export default function ProposalsPage() {
         </div>
       </main>
 
-      {/* Template Modal/Form would go here when selectedTemplate is set */}
+      {/* Proposal Form */}
       {selectedTemplate && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold text-gray-900">
-                  {templates.find(t => t.id === selectedTemplate)?.name}
-                </h3>
-                <button 
-                  onClick={() => setSelectedTemplate(null)}
-                  className="text-gray-400 hover:text-gray-600"
-                >
-                  ✕
-                </button>
-              </div>
-              
-              <p className="text-gray-600 mb-6">
-                Template form and customization would go here. This would include fields for:
-              </p>
-              
-              <ul className="text-sm text-gray-600 space-y-2 mb-6">
-                <li>• Client name and project title</li>
-                <li>• Project scope and deliverables</li>
-                <li>• Timeline and milestones</li>
-                <li>• Pricing from your rate calculator</li>
-                <li>• Payment terms and conditions</li>
-              </ul>
-              
-              <div className="flex space-x-4">
-                <button className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors">
-                  Generate Proposal
-                </button>
-                <button 
-                  onClick={() => setSelectedTemplate(null)}
-                  className="flex-1 border border-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ProposalForm 
+          templateId={selectedTemplate}
+          templateName={templates.find(t => t.id === selectedTemplate)?.name || ''}
+          onClose={() => setSelectedTemplate(null)}
+        />
       )}
     </div>
   )
