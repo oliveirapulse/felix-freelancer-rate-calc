@@ -19,32 +19,32 @@ interface ProposalData {
 export async function generateProposalPDF(data: ProposalData, templateId: string) {
   const doc = new jsPDF()
   
-  // Set up colors and fonts
-  const primaryColor = [59, 130, 246] // Blue
-  const textColor = [55, 65, 81] // Gray-700
-  const lightGray = [229, 231, 235] // Gray-200
+  // Set up colors
+  const primaryColor = { r: 59, g: 130, b: 246 } // Blue
+  const textColor = { r: 55, g: 65, b: 81 } // Gray-700
+  const lightGray = { r: 229, g: 231, b: 235 } // Gray-200
   
   let yPosition = 30
   
   // Header
   doc.setFontSize(24)
-  doc.setTextColor(...primaryColor)
+  doc.setTextColor(primaryColor.r, primaryColor.g, primaryColor.b)
   doc.text('PROJECT PROPOSAL', 20, yPosition)
   
   yPosition += 15
   doc.setFontSize(12)
-  doc.setTextColor(...textColor)
+  doc.setTextColor(textColor.r, textColor.g, textColor.b)
   doc.text(`Generated on ${new Date().toLocaleDateString()}`, 20, yPosition)
   
   // Client Information
   yPosition += 20
   doc.setFontSize(16)
-  doc.setTextColor(...primaryColor)
+  doc.setTextColor(primaryColor.r, primaryColor.g, primaryColor.b)
   doc.text('CLIENT INFORMATION', 20, yPosition)
   
   yPosition += 10
   doc.setFontSize(12)
-  doc.setTextColor(...textColor)
+  doc.setTextColor(textColor.r, textColor.g, textColor.b)
   doc.text(`Client: ${data.clientName}`, 20, yPosition)
   yPosition += 8
   doc.text(`Project: ${data.projectTitle}`, 20, yPosition)
@@ -53,14 +53,13 @@ export async function generateProposalPDF(data: ProposalData, templateId: string
   if (data.projectDescription) {
     yPosition += 15
     doc.setFontSize(16)
-    doc.setTextColor(...primaryColor)
+    doc.setTextColor(primaryColor.r, primaryColor.g, primaryColor.b)
     doc.text('PROJECT OVERVIEW', 20, yPosition)
     
     yPosition += 10
     doc.setFontSize(12)
-    doc.setTextColor(...textColor)
+    doc.setTextColor(textColor.r, textColor.g, textColor.b)
     
-    // Wrap text for description
     const descriptionLines = doc.splitTextToSize(data.projectDescription, 170)
     doc.text(descriptionLines, 20, yPosition)
     yPosition += descriptionLines.length * 6
@@ -69,13 +68,13 @@ export async function generateProposalPDF(data: ProposalData, templateId: string
   // Project Scope
   yPosition += 15
   doc.setFontSize(16)
-  doc.setTextColor(...primaryColor)
+  doc.setTextColor(primaryColor.r, primaryColor.g, primaryColor.b)
   doc.text('PROJECT SCOPE', 20, yPosition)
   
   yPosition += 10
   doc.setFontSize(12)
-  doc.setTextColor(...textColor)
-  data.scope.filter(item => item.trim()).forEach((item, index) => {
+  doc.setTextColor(textColor.r, textColor.g, textColor.b)
+  data.scope.filter(item => item.trim()).forEach((item) => {
     doc.text(`• ${item}`, 25, yPosition)
     yPosition += 6
   })
@@ -83,13 +82,13 @@ export async function generateProposalPDF(data: ProposalData, templateId: string
   // Deliverables
   yPosition += 10
   doc.setFontSize(16)
-  doc.setTextColor(...primaryColor)
+  doc.setTextColor(primaryColor.r, primaryColor.g, primaryColor.b)
   doc.text('DELIVERABLES', 20, yPosition)
   
   yPosition += 10
   doc.setFontSize(12)
-  doc.setTextColor(...textColor)
-  data.deliverables.filter(item => item.trim()).forEach((item, index) => {
+  doc.setTextColor(textColor.r, textColor.g, textColor.b)
+  data.deliverables.filter(item => item.trim()).forEach((item) => {
     doc.text(`• ${item}`, 25, yPosition)
     yPosition += 6
   })
@@ -97,12 +96,12 @@ export async function generateProposalPDF(data: ProposalData, templateId: string
   // Timeline
   yPosition += 15
   doc.setFontSize(16)
-  doc.setTextColor(...primaryColor)
+  doc.setTextColor(primaryColor.r, primaryColor.g, primaryColor.b)
   doc.text('TIMELINE', 20, yPosition)
   
   yPosition += 10
   doc.setFontSize(12)
-  doc.setTextColor(...textColor)
+  doc.setTextColor(textColor.r, textColor.g, textColor.b)
   doc.text(`Estimated completion time: ${data.timeline}`, 20, yPosition)
   
   // Check if we need a new page
@@ -114,38 +113,38 @@ export async function generateProposalPDF(data: ProposalData, templateId: string
   // Pricing Section
   yPosition += 20
   doc.setFontSize(16)
-  doc.setTextColor(...primaryColor)
+  doc.setTextColor(primaryColor.r, primaryColor.g, primaryColor.b)
   doc.text('PRICING', 20, yPosition)
   
   yPosition += 15
   doc.setFontSize(12)
-  doc.setTextColor(...textColor)
+  doc.setTextColor(textColor.r, textColor.g, textColor.b)
   
   // Pricing table background
-  doc.setFillColor(...lightGray)
+  doc.setFillColor(lightGray.r, lightGray.g, lightGray.b)
   doc.rect(20, yPosition - 5, 170, 35, 'F')
   
   doc.text(`Hourly Rate: $${data.hourlyRate}`, 25, yPosition + 5)
   doc.text(`Estimated Hours: ${data.projectHours}`, 25, yPosition + 15)
   
   doc.setFontSize(14)
-  doc.setTextColor(...primaryColor)
+  doc.setTextColor(primaryColor.r, primaryColor.g, primaryColor.b)
   doc.text(`Total Project Cost: $${data.projectTotal.toLocaleString()}`, 25, yPosition + 27)
   
   yPosition += 45
   doc.setFontSize(12)
-  doc.setTextColor(...textColor)
+  doc.setTextColor(textColor.r, textColor.g, textColor.b)
   doc.text(`Payment Terms: ${data.paymentTerms}`, 20, yPosition)
   
   // Your Information
   yPosition += 20
   doc.setFontSize(16)
-  doc.setTextColor(...primaryColor)
+  doc.setTextColor(primaryColor.r, primaryColor.g, primaryColor.b)
   doc.text('CONTACT INFORMATION', 20, yPosition)
   
   yPosition += 10
   doc.setFontSize(12)
-  doc.setTextColor(...textColor)
+  doc.setTextColor(textColor.r, textColor.g, textColor.b)
   doc.text(`${data.yourName}`, 20, yPosition)
   if (data.yourEmail) {
     yPosition += 6
@@ -170,37 +169,4 @@ export async function generateProposalPDF(data: ProposalData, templateId: string
   doc.save(filename)
   
   return filename
-}
-
-// Template-specific styling (future enhancement)
-export function getTemplateStyles(templateId: string) {
-  const styles = {
-    'clean-modern': {
-      primaryColor: [59, 130, 246],
-      font: 'helvetica',
-      headerSize: 24
-    },
-    'corporate-professional': {
-      primaryColor: [55, 65, 81],
-      font: 'times',
-      headerSize: 22
-    },
-    'creative-brief': {
-      primaryColor: [168, 85, 247],
-      font: 'helvetica',
-      headerSize: 26
-    },
-    'consulting-focused': {
-      primaryColor: [16, 185, 129],
-      font: 'helvetica',
-      headerSize: 24
-    },
-    'technical-specification': {
-      primaryColor: [99, 102, 241],
-      font: 'courier',
-      headerSize: 20
-    }
-  }
-  
-  return styles[templateId as keyof typeof styles] || styles['clean-modern']
 }
