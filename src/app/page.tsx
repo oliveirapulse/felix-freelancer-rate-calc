@@ -394,7 +394,7 @@ export default function Home() {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
-            <p>&copy; 2024 Freelancer Rate Calculator. Made with ❤️ for freelancers.</p>
+            <p>&copy; 2026 Freelancer Rate Calculator. Made with ❤️ for freelancers.</p>
           </div>
         </div>
       </footer>
