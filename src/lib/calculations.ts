@@ -11,6 +11,20 @@ export interface CalculatorInputs {
   location: 'low' | 'medium' | 'high'; // cost of living
 }
 
+export interface OutcomeBasedInputs {
+  estimatedProjectValue: number;  // Total value the project delivers to client
+  estimatedProjectHours: number;  // Hours to complete the project
+  valueCapturePercent: number;    // % of client value you capture (typically 10-30%)
+}
+
+export interface OutcomeBasedResults {
+  valueBasedRate: number;           // Hourly rate derived from project value
+  valueBasedProjectTotal: number;   // Total project fee based on value pricing
+  valuePremiumPercent: number;      // How much more than cost-based rate (%)
+  effectiveMultiplier: number;      // Value rate / recommended rate
+  clientROI: number;                // Client's return: value received vs fee paid
+}
+
 export interface CalculatorResults {
   minimumRate: number;
   recommendedRate: number;
@@ -156,6 +170,43 @@ export function formatCurrency(amount: number): string {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0
   }).format(amount);
+}
+
+// Calculate outcome-based (value-based) pricing metrics
+export function calculateOutcomeBasedRate(
+  outcomeInputs: OutcomeBasedInputs,
+  recommendedRate: number
+): OutcomeBasedResults {
+  const { estimatedProjectValue, estimatedProjectHours, valueCapturePercent } = outcomeInputs;
+
+  // Value-based project total: what you should charge based on value delivered
+  const valueBasedProjectTotal = Math.round(estimatedProjectValue * (valueCapturePercent / 100));
+
+  // Derive an hourly rate from the value-based total
+  const valueBasedRate = Math.round(valueBasedProjectTotal / estimatedProjectHours);
+
+  // How much more is the value-based rate vs the cost-based rate
+  const valuePremiumPercent = recommendedRate > 0
+    ? Math.round(((valueBasedRate - recommendedRate) / recommendedRate) * 100)
+    : 0;
+
+  // Effective multiplier (value rate / cost-based rate)
+  const effectiveMultiplier = recommendedRate > 0
+    ? Math.round((valueBasedRate / recommendedRate) * 100) / 100
+    : 0;
+
+  // Client ROI: how much value they get per dollar spent
+  const clientROI = valueBasedProjectTotal > 0
+    ? Math.round(((estimatedProjectValue - valueBasedProjectTotal) / valueBasedProjectTotal) * 100)
+    : 0;
+
+  return {
+    valueBasedRate,
+    valueBasedProjectTotal,
+    valuePremiumPercent,
+    effectiveMultiplier,
+    clientROI
+  };
 }
 
 // Helper function to calculate potential earnings increase

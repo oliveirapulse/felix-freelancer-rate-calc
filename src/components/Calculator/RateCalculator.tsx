@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { calculateRates, formatCurrency, type CalculatorInputs, type CalculatorResults } from '@/lib/calculations'
+import { calculateRates, calculateOutcomeBasedRate, formatCurrency, type CalculatorInputs, type CalculatorResults, type OutcomeBasedInputs, type OutcomeBasedResults } from '@/lib/calculations'
 
 const RateCalculator: React.FC = () => {
   const [inputs, setInputs] = useState<CalculatorInputs>({
@@ -18,11 +18,23 @@ const RateCalculator: React.FC = () => {
   const [results, setResults] = useState<CalculatorResults | null>(null)
   const [currentRate, setCurrentRate] = useState<number>(50)
 
+  const [outcomeEnabled, setOutcomeEnabled] = useState(false)
+  const [outcomeInputs, setOutcomeInputs] = useState<OutcomeBasedInputs>({
+    estimatedProjectValue: 50000,
+    estimatedProjectHours: 100,
+    valueCapturePercent: 15
+  })
+  const [outcomeResults, setOutcomeResults] = useState<OutcomeBasedResults | null>(null)
+
   // Calculate results whenever inputs change
   useEffect(() => {
     const calculatedResults = calculateRates(inputs)
     setResults(calculatedResults)
-  }, [inputs])
+
+    if (outcomeEnabled) {
+      setOutcomeResults(calculateOutcomeBasedRate(outcomeInputs, calculatedResults.recommendedRate))
+    }
+  }, [inputs, outcomeInputs, outcomeEnabled])
 
   const updateInput = (key: keyof CalculatorInputs, value: any) => {
     setInputs(prev => ({
@@ -224,6 +236,95 @@ const RateCalculator: React.FC = () => {
               />
             </div>
           </div>
+
+          {/* Outcome-Based Pricing Toggle */}
+          <div className="mt-8 border-t border-gray-300 pt-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Value-Based Pricing</h3>
+              <button
+                onClick={() => setOutcomeEnabled(!outcomeEnabled)}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${outcomeEnabled ? 'bg-purple-600' : 'bg-gray-300'}`}
+              >
+                <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${outcomeEnabled ? 'translate-x-6' : 'translate-x-1'}`} />
+              </button>
+            </div>
+            <p className="text-xs text-gray-500 mb-4">
+              Price based on the value you deliver, not just your time. This shifts the conversation from &quot;what do you cost?&quot; to &quot;what is it worth?&quot;
+            </p>
+
+            {outcomeEnabled && (
+              <div className="space-y-5">
+                {/* Estimated Project Value */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Estimated Value to Client
+                  </label>
+                  <p className="text-xs text-gray-500 mb-2">
+                    Revenue, savings, or impact this project will generate for the client
+                  </p>
+                  <div className="flex items-center space-x-4">
+                    <input
+                      type="range"
+                      min="5000"
+                      max="1000000"
+                      step="5000"
+                      value={outcomeInputs.estimatedProjectValue}
+                      onChange={(e) => setOutcomeInputs(prev => ({ ...prev, estimatedProjectValue: parseInt(e.target.value) }))}
+                      className="flex-1"
+                    />
+                    <span className="text-lg font-semibold text-gray-900 min-w-[100px]">
+                      {formatCurrency(outcomeInputs.estimatedProjectValue)}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Estimated Project Hours */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Estimated Project Hours
+                  </label>
+                  <div className="flex items-center space-x-4">
+                    <input
+                      type="range"
+                      min="5"
+                      max="500"
+                      step="5"
+                      value={outcomeInputs.estimatedProjectHours}
+                      onChange={(e) => setOutcomeInputs(prev => ({ ...prev, estimatedProjectHours: parseInt(e.target.value) }))}
+                      className="flex-1"
+                    />
+                    <span className="text-lg font-semibold text-gray-900 min-w-[60px]">
+                      {outcomeInputs.estimatedProjectHours}h
+                    </span>
+                  </div>
+                </div>
+
+                {/* Value Capture Percentage */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Value Capture Rate
+                  </label>
+                  <p className="text-xs text-gray-500 mb-2">
+                    % of the client&apos;s value you charge (10-30% is typical)
+                  </p>
+                  <div className="flex items-center space-x-4">
+                    <input
+                      type="range"
+                      min="5"
+                      max="50"
+                      step="1"
+                      value={outcomeInputs.valueCapturePercent}
+                      onChange={(e) => setOutcomeInputs(prev => ({ ...prev, valueCapturePercent: parseInt(e.target.value) }))}
+                      className="flex-1"
+                    />
+                    <span className="text-lg font-semibold text-gray-900 min-w-[60px]">
+                      {outcomeInputs.valueCapturePercent}%
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Results Display */}
@@ -269,6 +370,57 @@ const RateCalculator: React.FC = () => {
                   </span>
                 </div>
               </div>
+
+              {/* Outcome-Based Pricing Results */}
+              {outcomeEnabled && outcomeResults && (
+                <div className="bg-purple-50 p-5 rounded-lg border border-purple-200">
+                  <h3 className="text-lg font-semibold text-purple-900 mb-3">Value-Based Rate</h3>
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <div className="text-sm text-purple-600 font-medium">Value-Based Rate</div>
+                      <div className="text-2xl font-bold text-purple-700">{formatCurrency(outcomeResults.valueBasedRate)}/hr</div>
+                    </div>
+                    <div>
+                      <div className="text-sm text-purple-600 font-medium">Project Total</div>
+                      <div className="text-2xl font-bold text-purple-700">{formatCurrency(outcomeResults.valueBasedProjectTotal)}</div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-purple-700">vs. Cost-Based Rate</span>
+                      <span className={`font-semibold ${outcomeResults.valuePremiumPercent > 0 ? 'text-green-700' : 'text-red-600'}`}>
+                        {outcomeResults.valuePremiumPercent > 0 ? '+' : ''}{outcomeResults.valuePremiumPercent}%
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-purple-700">Value Multiplier</span>
+                      <span className="font-semibold text-purple-900">{outcomeResults.effectiveMultiplier}x</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-purple-700">Client ROI</span>
+                      <span className="font-semibold text-green-700">{outcomeResults.clientROI}%</span>
+                    </div>
+                  </div>
+
+                  {outcomeResults.valuePremiumPercent > 0 && (
+                    <div className="mt-3 p-3 bg-purple-100 rounded-md">
+                      <p className="text-xs text-purple-800">
+                        Your value-based rate is <strong>{outcomeResults.valuePremiumPercent}%</strong> higher than your cost-based rate.
+                        The client still gets a <strong>{outcomeResults.clientROI}% ROI</strong> — use this to anchor pricing conversations around outcomes, not hours.
+                      </p>
+                    </div>
+                  )}
+
+                  {outcomeResults.valuePremiumPercent <= 0 && (
+                    <div className="mt-3 p-3 bg-yellow-100 rounded-md">
+                      <p className="text-xs text-yellow-800">
+                        Your cost-based rate already exceeds the value-based rate. Consider whether the project value estimate is accurate, or adjust the value capture rate.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Project Ranges */}
               <div>
